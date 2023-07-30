@@ -1,0 +1,9 @@
+.*
+!.git*
+!.clang-format
+
+build/
+*.elf
+*.map
+*.bin
+*.gba
