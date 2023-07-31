@@ -8,16 +8,23 @@ MEMORY
     ROM   (x)    : ORIGIN = 0x08000000, LENGTH = 32M
 }
 
+/* TODO: dump */
+gMusicPlayerTable = 0x0869D668;
+gSongTable = 0x0869D6E0;
+
+gNumMusicPlayers = 9;
+gMaxLines = 0;
+
 SECTIONS
 {
     .text : ALIGN(4)
     {
-        . = ALIGN(4); asm/code.o(.text);
+        asm/code.o(.text);
 
-        . = ALIGN(4); src/gbasvc.o(.text);
-        . = ALIGN(4); src/gbasram.o(.text);
-
-        /* libgcc/libc */
+        src/m4a_1.o(.text);
+        src/m4a.o(.text);
+        src/gbasvc.o(.text);
+        src/gbasram.o(.text);
         *libgcc.a:_ashldi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         *libgcc.a:_divsi3.o(.text);
@@ -74,8 +81,8 @@ SECTIONS
     .rodata : ALIGN(4)
     {
         . = ALIGN(4); asm/rodata.o(.rodata);
-
-        /* libgcc/libc */
+        . = ALIGN(4); src/m4a.o(.rodata);
+        . = ALIGN(4); asm/rodata.o(.rodata_2);
         . = ALIGN(4); *libc.a:vfprintf.o(.rodata);
         . = ALIGN(4); *libc.a:dtoa.o(.rodata);
         . = ALIGN(4); *libc.a:impure.o(.rodata);
@@ -101,18 +108,20 @@ SECTIONS
     {
         . = 0x002258; src/gbasram.o(.bss);
         . = 0x002378;
-
-        /* libgcc/libc */
         . = ALIGN(4); *libc.a:syscalls.o(.bss);
         . = ALIGN(4); *libgcc.a:dp-bit.o(.bss);
         . = ALIGN(4); *libgcc.a:fp-bit.o(.bss);
+        . = ALIGN(4); *(bss.SoundMainRam);
 
         /* COMMON */
+        . = 0x004AE0; *(COMMON.gSoundInfo);
+        . = 0x005B50;
+        . = ALIGN(4); *(COMMON.gMPlayJumpTable);
+        . = ALIGN(4); *(COMMON.gCgbChans);
+        . = 0x005DE0; *(COMMON.gMPlayMemAccArea);
         . = 0x005E70;
         . = ALIGN(4); *(COMMON.ReadSramFast);
         . = ALIGN(4); *(COMMON.VerifySramFast);
-
-        /* libgcc/libc */
         . = ALIGN(4); errno = .; . = . + 4;
     } > IWRAM
 

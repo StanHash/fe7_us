@@ -13,6 +13,8 @@
 
 #define NAKEDFUNC __attribute__((naked))
 
+#define ALIGNED(n) __attribute__((aligned((n))))
+
 // this is often used in place of const for producing matching code.
 #define SHOULD_BE_CONST
 
