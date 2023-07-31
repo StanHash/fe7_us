@@ -11,6 +11,8 @@
 // each such symbol gets its own named section for ease of generating a matching layout.
 #define COMMON(name) SECTION("COMMON." #name)
 
+#define EWRAM_DATA SECTION("ewram_data")
+
 #define NAKEDFUNC __attribute__((naked))
 
 #define ALIGNED(n) __attribute__((aligned((n))))

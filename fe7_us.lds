@@ -24,7 +24,6 @@ SECTIONS
         src/crt0.o(.text);
         src/armfunc.o(.text);
         asm/code.o(.text);
-
         src/m4a_1.o(.text);
         src/m4a.o(.text);
         src/gbasvc.o(.text);
@@ -110,8 +109,8 @@ SECTIONS
 
     .bss (NOLOAD) : ALIGN(4)
     {
-        . = 0x002258; src/gbasram.o(.bss);
-        . = 0x002378;
+        . = 0x002258;
+        . = ALIGN(4); src/gbasram.o(.bss);
         . = ALIGN(4); *libc.a:syscalls.o(.bss);
         . = ALIGN(4); *libgcc.a:dp-bit.o(.bss);
         . = ALIGN(4); *libgcc.a:fp-bit.o(.bss);
@@ -140,9 +139,16 @@ SECTIONS
 
     .ewram_data (NOLOAD) : ALIGN(4)
     {
-        . = 0x022240; gFadeComponentStep = .;
-        . = 0x022260; gFadeComponents = .;
-        . = 0x022860; gPal = .;
+        . = 0x020140; /* begin (before that is ewram overlay) */
+
+        . = ALIGN(4); src/hardware.o(ewram_data);
+        . = ALIGN(4); src/async_upload.o(ewram_data);
+        . = ALIGN(4); src/audio.o(ewram_data);
+        . = ALIGN(4); src/proc.o(ewram_data);
+        . = ALIGN(4); src/icon.o(ewram_data);
+        . = ALIGN(4); src/debug_text.o(ewram_data);
+        . = ALIGN(4); src/text.o(ewram_data);
+
         . = 0x02E3DC; gMapUnit = .;
         . = 0x02E3E0; gMapTerrain = .;
         . = 0x03EEA8;
