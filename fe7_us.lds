@@ -11,6 +11,8 @@ MEMORY
 /* TODO: dump */
 gMusicPlayerTable = 0x0869D668;
 gSongTable = 0x0869D6E0;
+MsgHuffNodes = 0x08B7D71C;
+MsgHuffRoot = 0x08B808A8;
 
 gNumMusicPlayers = 9;
 gMaxLines = 0;
@@ -19,6 +21,8 @@ SECTIONS
 {
     .text : ALIGN(4)
     {
+        src/crt0.o(.text);
+        src/armfunc.o(.text);
         asm/code.o(.text);
 
         src/m4a_1.o(.text);
@@ -114,6 +118,15 @@ SECTIONS
         . = ALIGN(4); *(bss.SoundMainRam);
 
         /* COMMON */
+        . = 0x002860; gOamLoPutIt = .;
+        . = 0x0028E0; IntrFuncTable = .;
+        . = 0x002F34; gOamHiPutIt = .;
+        . = 0x0041E0; gWorkingMap = .;
+        . = 0x0041F0; gMapFloodSquareBufB = .;
+        . = 0x0043F0; gWorkingMovTable = .;
+        . = 0x004490; gMapFloodSquareBufA = .;
+        . = 0x0046A0; gMapFloodSt = .;
+
         . = 0x004AE0; *(COMMON.gSoundInfo);
         . = 0x005B50;
         . = ALIGN(4); *(COMMON.gMPlayJumpTable);
@@ -127,6 +140,11 @@ SECTIONS
 
     .ewram_data (NOLOAD) : ALIGN(4)
     {
+        . = 0x022240; gFadeComponentStep = .;
+        . = 0x022260; gFadeComponents = .;
+        . = 0x022860; gPal = .;
+        . = 0x02E3DC; gMapUnit = .;
+        . = 0x02E3E0; gMapTerrain = .;
         . = 0x03EEA8;
         . = ALIGN(4); end = .;
     } > EWRAM
