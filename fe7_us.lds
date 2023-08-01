@@ -148,9 +148,16 @@ SECTIONS
         . = ALIGN(4); src/icon.o(ewram_data);
         . = ALIGN(4); src/debug_text.o(ewram_data);
         . = ALIGN(4); src/text.o(ewram_data);
+        . = ALIGN(4); src/banim_sprite.o(ewram_data);
+        . = ALIGN(4); src/sprite.o(ewram_data);
+        . = ALIGN(4); src/face.o(ewram_data);
+        . = ALIGN(4); src/event.o(ewram_data);
+        . = ALIGN(4); src/msg.o(ewram_data);
+        . = ALIGN(4); src/util.o(ewram_data);
+        . = ALIGN(4); src/bm.o(ewram_data);
+        . = ALIGN(4); src/unit.o(ewram_data);
+        . = ALIGN(4); src/map.o(ewram_data);
 
-        . = 0x02E3DC; gMapUnit = .;
-        . = 0x02E3E0; gMapTerrain = .;
         . = 0x03EEA8;
         . = ALIGN(4); end = .;
     } > EWRAM

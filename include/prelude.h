@@ -8,4 +8,9 @@
 // implicit padding due to alignment may also be denoted using this macro.
 #define STRUCT_PAD(from, to) unsigned char _pad_##from[(to) - (from)]
 
+struct Vec2i
+{
+    i16 x, y;
+};
+
 #endif // PRELUDE_H
