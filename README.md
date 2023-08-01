@@ -35,7 +35,7 @@ Feel free.
 
 * [**StanHash/fe1**](https://github.com/StanHash/fe1), a disassembly of Fire Emblem: Ankoku Ryu to Hikari no Tsurugi (dormant)
 * [**ZaneAvernathy/FireEmblem5**](https://github.com/ZaneAvernathy/FireEmblem5), a disassembly of Fire Emblem: Thracia 776
-* [**StanHash/fe6**](https://github.com/StanHash/fe6), a disassembly of Fire Emblem: Fūin no Tsurugi
+* [**StanHash/fe6**](https://github.com/StanHash/fe6), a decompilation of Fire Emblem: Fūin no Tsurugi
 * [**MokhaLeee/FireEmblem7J**](https://github.com/MokhaLeee/FireEmblem7J), a decompilation of Fire Emblem: Rekka no Ken (JP)
 * [**FireEmblemUniverse/fireemblem8u**](https://github.com/FireEmblemUniverse/fireemblem8u), a decompilation of Fire Emblem: The Sacred Stones (US)
 
