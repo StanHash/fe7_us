@@ -97,6 +97,7 @@ SECTIONS
     .data : ALIGN(4)
     {
         . = ALIGN(4); asm/data.o(.data);
+        . = ALIGN(4); src/sio_link_loader.o(.data);
 
         /* libc */
         . = ALIGN(4); *libc.a:impure.o(.data);

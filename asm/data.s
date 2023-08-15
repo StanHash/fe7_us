@@ -1,8 +1,8 @@
     .data
 
-    @ B857F8 ... CF634C
+    @ B857F8 ... CF0CD0
 
-    .incbin "baserom.gba", 0xB857F8, 0xCF634C - 0xB857F8
+    .incbin "baserom.gba", 0xB857F8, 0xCF0CD0 - 0xB857F8
 
     .section ".data_2", "a"
 

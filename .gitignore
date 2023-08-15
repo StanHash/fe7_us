@@ -2,8 +2,7 @@
 !.git*
 !.clang-format
 
-build/
+/build/
 *.elf
 *.map
-*.bin
 *.gba
