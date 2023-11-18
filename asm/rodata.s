@@ -1,8 +1,8 @@
     .section ".rodata"
 
-    @ 0C57DC ... 677370
+    @ 0C5808 ... 677370
 
-    .incbin "baserom.gba", 0x0C57DC, 0x677370 - 0x0C57DC
+    .incbin "baserom.gba", 0x0C5808, 0x677370 - 0x0C5808
 
     .section ".rodata_2", "a"
 

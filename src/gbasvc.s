@@ -28,16 +28,16 @@ BgAffineSet:
 
     @ CpuFastSet
 
-    .global CpuSetFast
-    .type CpuSetFast, function
+    .global CpuFastSet
+    .type CpuFastSet, function
 
     .thumb
-CpuSetFast:
+CpuFastSet:
     svc   #0x0C
     bx    lr
 
     .align 2, 0
-    .size CpuSetFast, . - CpuSetFast
+    .size CpuFastSet, . - CpuFastSet
 
     @ CpuSet
 

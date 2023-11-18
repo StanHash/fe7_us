@@ -1,3 +1,6 @@
+BasedOnStyle: Microsoft
+SortIncludes: false
+---
 Language: Cpp
 IndentWidth: 4
 PointerAlignment: Middle

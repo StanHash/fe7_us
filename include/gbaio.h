@@ -202,6 +202,49 @@ enum
 #define DMA_INTR_ENABLE 0x4000
 #define DMA_ENABLE 0x8000
 
+#define DmaSet(dma_num, src, dst, control)                                                                             \
+    {                                                                                                                  \
+        u32 volatile * dma_regs = (u32 volatile *)&REG_DMA##dma_num##SAD;                                              \
+        dma_regs[0] = (u32 volatile)(src);                                                                             \
+        dma_regs[1] = (u32 volatile)(dst);                                                                             \
+        dma_regs[2] = (u32 volatile)(control);                                                                         \
+        dma_regs[2];                                                                                                   \
+    }
+
+#define DMA_FILL(dma_num, value, dst, size, bit)                                                                       \
+    {                                                                                                                  \
+        u##bit volatile tmp = (u##bit volatile)(value);                                                                \
+        DmaSet(                                                                                                        \
+            dma_num, &tmp, dst,                                                                                        \
+            (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_FIXED | DMA_DST_INC) << 16 | ((size) / (bit / 8))); \
+    }
+
+#define DmaFill16(dma_num, value, dst, size) DMA_FILL(dma_num, value, dst, size, 16)
+#define DmaFill32(dma_num, value, dst, size) DMA_FILL(dma_num, value, dst, size, 32)
+
+// Note that the DMA clear macros cause the DMA control value to be calculated
+// at runtime rather than compile time. The size is divided by the DMA transfer
+// unit size (2 or 4 bytes) and then combined with the DMA control flags using a
+// bitwise OR operation.
+
+#define DMA_CLEAR(dma_num, dst, size, bit)                                                                             \
+    {                                                                                                                  \
+        u##bit volatile * _dest = (u##bit volatile *)(dst);                                                            \
+        u32 _size = size;                                                                                              \
+        DmaFill##bit(dma_num, 0, _dest, _size);                                                                        \
+    }
+
+#define DmaClear16(dma_num, dst, size) DMA_CLEAR(dma_num, dst, size, 16)
+#define DmaClear32(dma_num, dst, size) DMA_CLEAR(dma_num, dst, size, 32)
+
+#define DMA_COPY(dma_num, src, dst, size, bit)                                                                         \
+    DmaSet(                                                                                                            \
+        dma_num, src, dst,                                                                                             \
+        (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_INC | DMA_DST_INC) << 16 | ((size) / (bit / 8)))
+
+#define DmaCopy16(dma_num, src, dst, size) DMA_COPY(dma_num, src, dst, size, 16)
+#define DmaCopy32(dma_num, src, dst, size) DMA_COPY(dma_num, src, dst, size, 32)
+
 // timer
 #define TIMER_1CLK 0x00
 #define TIMER_64CLK 0x01
@@ -209,5 +252,55 @@ enum
 #define TIMER_1024CLK 0x03
 #define TIMER_INTR_ENABLE 0x40
 #define TIMER_ENABLE 0x80
+
+// waitcnt
+#define WAITCNT_SRAM_4 (0 << 0)
+#define WAITCNT_SRAM_3 (1 << 0)
+#define WAITCNT_SRAM_2 (2 << 0)
+#define WAITCNT_SRAM_8 (3 << 0)
+#define WAITCNT_SRAM_MASK (3 << 0)
+
+#define WAITCNT_WS0_N_4 (0 << 2)
+#define WAITCNT_WS0_N_3 (1 << 2)
+#define WAITCNT_WS0_N_2 (2 << 2)
+#define WAITCNT_WS0_N_8 (3 << 2)
+#define WAITCNT_WS0_N_MASK (3 << 2)
+
+#define WAITCNT_WS0_S_2 (0 << 4)
+#define WAITCNT_WS0_S_1 (1 << 4)
+
+#define WAITCNT_WS1_N_4 (0 << 5)
+#define WAITCNT_WS1_N_3 (1 << 5)
+#define WAITCNT_WS1_N_2 (2 << 5)
+#define WAITCNT_WS1_N_8 (3 << 5)
+#define WAITCNT_WS1_N_MASK (3 << 5)
+
+#define WAITCNT_WS1_S_4 (0 << 7)
+#define WAITCNT_WS1_S_1 (1 << 7)
+
+#define WAITCNT_WS2_N_4 (0 << 8)
+#define WAITCNT_WS2_N_3 (1 << 8)
+#define WAITCNT_WS2_N_2 (2 << 8)
+#define WAITCNT_WS2_N_8 (3 << 8)
+#define WAITCNT_WS2_N_MASK (3 << 8)
+
+#define WAITCNT_WS2_S_8 (0 << 10)
+#define WAITCNT_WS2_S_1 (1 << 10)
+
+#define WAITCNT_PHI_OUT_NONE (0 << 11)
+#define WAITCNT_PHI_OUT_4MHZ (1 << 11)
+#define WAITCNT_PHI_OUT_8MHZ (2 << 11)
+#define WAITCNT_PHI_OUT_16MHZ (3 << 11)
+#define WAITCNT_PHI_OUT_MASK (3 << 11)
+
+#define WAITCNT_PREFETCH_ENABLE (1 << 14)
+
+// memory
+
+#define EWRAM_ADDR 0x02000000
+#define EWRAM_SIZE 0x00040000
+
+#define IWRAM_ADDR 0x03000000
+#define IWRAM_SIZE 0x00008000
 
 #endif // GBAIO_H

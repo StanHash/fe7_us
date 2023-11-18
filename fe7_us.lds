@@ -14,6 +14,8 @@ gSongTable = 0x0869D6E0;
 MsgHuffNodes = 0x08B7D71C;
 MsgHuffRoot = 0x08B808A8;
 
+gKeys = 0x08B857F8;
+
 gNumMusicPlayers = 9;
 gMaxLines = 0;
 
@@ -23,6 +25,7 @@ SECTIONS
     {
         src/crt0.o(.text);
         src/armfunc.o(.text);
+        src/main.o(.text);
         asm/code.o(.text);
         src/m4a_1.o(.text);
         src/m4a.o(.text);
@@ -83,6 +86,7 @@ SECTIONS
 
     .rodata : ALIGN(4)
     {
+        . = ALIGN(4); src/main.o(.rodata);
         . = ALIGN(4); asm/rodata.o(.rodata);
         . = ALIGN(4); src/m4a.o(.rodata);
         . = ALIGN(4); asm/rodata.o(.rodata_2);
