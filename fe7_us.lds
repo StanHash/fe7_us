@@ -26,6 +26,7 @@ SECTIONS
         src/crt0.o(.text);
         src/armfunc.o(.text);
         src/main.o(.text);
+        src/interrupt.o(.text);
         asm/code.o(.text);
         src/m4a_1.o(.text);
         src/m4a.o(.text);
@@ -125,12 +126,12 @@ SECTIONS
         . = 0x002860; gOamLoPutIt = .;
         . = 0x0028E0; IntrFuncTable = .;
         . = 0x002F34; gOamHiPutIt = .;
+        . = 0x003950; IntrMainRam = .;
         . = 0x0041E0; gWorkingMap = .;
         . = 0x0041F0; gMapFloodSquareBufB = .;
         . = 0x0043F0; gWorkingMovTable = .;
         . = 0x004490; gMapFloodSquareBufA = .;
         . = 0x0046A0; gMapFloodSt = .;
-
         . = 0x004AE0; *(COMMON.gSoundInfo);
         . = 0x005B50;
         . = ALIGN(4); *(COMMON.gMPlayJumpTable);

@@ -129,4 +129,6 @@ endif
 
 %/main.o:           CFLAGS += -mtpcs-frame
 
+%/interrupt.o:      CFLAGS += -O0
+
 %/gbasram.o:        CFLAGS += -O1

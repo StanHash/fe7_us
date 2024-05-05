@@ -36,7 +36,7 @@ struct Keys
 // ... GetBgChrOffset(...)
 // ... func_080013CC(...)
 // ... func_08001400(...)
-// ... func_08001434(...)
+// ... SetBgChrOffset(...)
 // ... func_08001478(...)
 // ... func_080014DC(...)
 // ... func_08001518(...)
@@ -44,7 +44,7 @@ struct Keys
 // ... func_08001624(...)
 // ... func_080016EC(...)
 // ... TmFill(...)
-// ... func_08001840(...)
+// ... SetBlankChr(...)
 void SetOnVBlank(void (*func)(void));
 // ... func_080018D0(...)
 // ... func_08001948(...)

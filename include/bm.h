@@ -57,7 +57,7 @@ struct PlayStatus
     /* 19 */ u8 ending_id : 4;
     /* 19 */ u8 unk_19_4 : 4;
     /* 1A */ u8 last_sort_id;
-    /* 1B */ u8 unk_1B;
+    /* 1B */ u8 scenario;
 
     /* 1C */ STRUCT_PAD(0x1C, 0x40); // this is all fields new to fe7
 

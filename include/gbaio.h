@@ -303,4 +303,6 @@ enum
 #define IWRAM_ADDR 0x03000000
 #define IWRAM_SIZE 0x00008000
 
+#define INTR_VECTOR (*(void **)0x03007FFC)
+
 #endif // GBAIO_H
