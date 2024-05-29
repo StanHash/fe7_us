@@ -36,6 +36,8 @@ typedef u16 fu16;
 typedef i8 bool;
 #endif
 
+typedef i8 bool8;
+
 enum
 {
     FALSE,

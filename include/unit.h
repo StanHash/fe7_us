@@ -3,6 +3,9 @@
 
 #include "prelude.h"
 
+#define FACTION_BLUE 0x00
+#define UNITS_PER_FACTION 0x40
+
 #define UNIT_COUNT_BLUE 62
 #define UNIT_COUNT_RED 50
 #define UNIT_COUNT_GREEN 20
@@ -106,7 +109,7 @@ struct PInfo
     /* 06 */ u16 fid;
     /* 08 */ u8 chibi_id;
     /* 09 */ u8 affinity;
-    /* 0A */ u8 unk_0A;
+    /* 0A */ u8 sort_key;
 
     /* 0B */ i8 base_level;
     /* 0C */ i8 base_hp;
@@ -132,11 +135,13 @@ struct PInfo
     /* 24 */ u8 banim_pal_b;
     /* 25 */ u8 banim_info_override[2];
 
-    /* 27 */ u8 pad_25[0x28 - 0x27];
+    /* 27 */ ALIGN_PAD(0x27, 0x28);
 
     /* 28 */ u32 attributes;
 
     /* 2C */ struct SupportInfo const * support_info;
+
+    /* 30 */ u8 generic_talk_tone;
 };
 
 struct JInfo
@@ -148,7 +153,7 @@ struct JInfo
     /* 06 */ u8 map_sprite;
     /* 07 */ u8 walk_speed;
     /* 08 */ u16 fid;
-    /* 0A */ u8 unk_0A;
+    /* 0A */ u8 sort_key;
 
     /* 0B */ i8 base_hp;
     /* 0C */ i8 base_pow;
@@ -255,8 +260,95 @@ struct UnitInfo
     /* 0C */ u8 ai[4];
 };
 
+// ... func_080174D8(...)
+// ... ClearUnit(...)
+// ... func_08017530(...)
+// ... func_0801754C(...)
+// ... func_08017584(...)
+// ... GetUnitVision(...)
+// ... SetUnitStatus(...)
+// ... func_08017600(...)
+// ... func_08017610(...)
+// ... UnitAddItem(...)
+// ... func_08017674(...)
+// ... UnitRemoveInvalidItems(...)
+// ... GetUnitItemCount(...)
+// ... func_080176F8(...)
+// ... BatchCreateUnits(...)
+// ... func_08017754(...)
+// ... CreateUnit(...)
+// ... UnitInitFromInfo(...)
+// ... func_080178F4(...)
+// ... UnitInitStats(...)
+// ... func_080179BC(...)
+// ... UnitInitSupports(...)
+// ... UnitAutolevelWeaponExp(...)
+// ... UnitAutolevelCore(...)
+// ... UnitApplyBonusLevels(...)
+// ... UnitAutolevel(...)
+// ... UnitAutolevelPlayer(...)
+// ... UnitCheckStatOverflow(...)
+struct Unit * GetUnitByPid(int pid);
+// ... func_08017D70(...)
+// ... CanUnitCarry(...)
+// ... UnitRescue(...)
+// ... UnitDropRescue(...)
+// ... UnitGiveRescue(...)
+// ... KillUnit(...)
+// ... UnitChangeFaction(...)
+// ... UnitSyncMovement(...)
+// ... func_08017F6C(...)
+// ... UnitBeginAction(...)
+// ... UnitBeginReMoveAction(...)
+// ... func_080181D0(...)
+// ... func_08018268(...)
+// ... func_08018300(...)
+// ... func_080183F4(...)
+// ... UnitUpdateUsedItem(...)
+// ... GetUnitAid(...)
+// ... GetUnitMagRange(...)
+// ... UnitKnowsMagic(...)
+// ... func_08018504(...)
+// ... GetUnitKeyItemSlotForTerrain(...)
+// ... GetAidIconFromAttributes(...)
+// ... func_080185AC(...)
+// ... func_08018624(...)
+// ... func_0801865C(...)
+// ... func_0801871C(...)
+// ... func_0801878C(...)
+// ... func_080187BC(...)
+// ... GetUnitMovementCost(...)
+// ... func_08018814(...)
+// ... func_08018830(...)
+// ... func_08018888(...)
+// ... func_080188D4(...)
+// ... func_08018980(...)
+// ... GetUnitCurrentHp(...)
+// ... GetUnitMaxHp(...)
+// ... GetUnitPower(...)
+// ... GetUnitSkill(...)
+// ... GetUnitSpeed(...)
+// ... GetUnitDefense(...)
+// ... GetUnitResistance(...)
+// ... GetUnitLuck(...)
+// ... GetUnitFid(...)
+// ... func_08018BF4(...)
+// ... func_08018C20(...)
+// ... func_08018C38(...)
+// ... func_08018C40(...)
+// ... func_08018C7C(...)
+// ... func_08018CC0(...)
+// ... func_08018CF0(...)
+struct Unit * GetUnit(int id);
+// ... GetJobInfo(...)
+// ... func_08018D38(...)
+// ... func_08018D50(...)
+// ... func_08018D68(...)
+
 extern u8 gActiveUnitId;
 extern struct Vec2i gActiveUnitMoveOrigin;
+
+extern struct Unit * gActiveUnit;
 
 extern struct Unit gBlueUnits[UNIT_COUNT_BLUE];
 extern struct Unit gRedUnits[UNIT_COUNT_RED];
@@ -264,5 +356,25 @@ extern struct Unit gGreenUnits[UNIT_COUNT_GREEN];
 extern struct Unit gPurpleUnits[UNIT_COUNT_PURPLE];
 
 #define UNIT_ATTRIBUTES(unit) ((unit)->pinfo->attributes | ((unit)->jinfo->attributes))
+
+#define FOR_UNITS(begin, end, var_name, body)                                                                          \
+    {                                                                                                                  \
+        int __unit_id;                                                                                                 \
+        struct Unit * var_name;                                                                                        \
+        for (__unit_id = (begin); __unit_id < (end); ++__unit_id)                                                      \
+        {                                                                                                              \
+            var_name = GetUnit(__unit_id);                                                                             \
+            if (var_name == NULL)                                                                                      \
+                continue;                                                                                              \
+            if (var_name->pinfo == NULL)                                                                               \
+                continue;                                                                                              \
+            body                                                                                                       \
+        }                                                                                                              \
+    }
+
+#define FOR_UNITS_FACTION(faction, var_name, body)                                                                     \
+    FOR_UNITS((faction) + 1, (faction) + UNITS_PER_FACTION, var_name, body)
+
+#define FOR_UNITS_ALL(var_name, body) FOR_UNITS(1, 0xC0, var_name, body)
 
 #endif // UNIT_H

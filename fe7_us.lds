@@ -15,6 +15,13 @@ MsgHuffNodes = 0x08B7D71C;
 MsgHuffRoot = 0x08B808A8;
 
 gKeys = 0x08B857F8;
+gEventCmdTable = 0x08B90E48;
+gBackgroundTable = 0x08B91588;
+ProcScr_EventWaitForMu = 0x08B91A08;
+UnitInfo_Dummy = 0x08B91A18;
+ProcScr_EventFlashCursor = 0x08B91A38;
+ProcScr_EventCursor = 0x08B91A50;
+ProcScr_MoveCamera = 0x08B92E38;
 
 gNumMusicPlayers = 9;
 gMaxLines = 0;
@@ -27,6 +34,9 @@ SECTIONS
         src/armfunc.o(.text);
         src/main.o(.text);
         src/interrupt.o(.text);
+        asm/code_1.o(.text);
+        src/event.o(.text);
+        asm/event.o(.text);
         asm/code.o(.text);
         src/m4a_1.o(.text);
         src/m4a.o(.text);
@@ -124,13 +134,16 @@ SECTIONS
 
         /* COMMON */
         . = 0x002860; gOamLoPutIt = .;
+        . = 0x002870; gDispIo = .;
         . = 0x0028E0; IntrFuncTable = .;
         . = 0x002F34; gOamHiPutIt = .;
         . = 0x003950; IntrMainRam = .;
+        . = 0x0041D0; gMutableUnitInfo = .;
         . = 0x0041E0; gWorkingMap = .;
         . = 0x0041F0; gMapFloodSquareBufB = .;
         . = 0x0043F0; gWorkingMovTable = .;
         . = 0x004490; gMapFloodSquareBufA = .;
+        . = 0x004690; gActiveUnit = .;
         . = 0x0046A0; gMapFloodSt = .;
         . = 0x004AE0; *(COMMON.gSoundInfo);
         . = 0x005B50;
@@ -163,6 +176,8 @@ SECTIONS
         . = ALIGN(4); src/bm.o(ewram_data);
         . = ALIGN(4); src/unit.o(ewram_data);
         . = ALIGN(4); src/map.o(ewram_data);
+
+        . = 0x033E00; gWorkingMoveScript = .;
 
         . = 0x03EEA8;
         . = ALIGN(4); end = .;

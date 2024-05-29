@@ -39,6 +39,13 @@ struct BmStatus
     /* 3F */ i8 unk_3F;
 };
 
+#define PLAY_SCENARIO_0 0 // what is this?
+#define PLAY_SCENARIO_1 1
+#define PLAY_SCENARIO_2 2
+#define PLAY_SCENARIO_3 3
+
+#define PLAY_FLAG_HARD 0x40
+
 struct PlayStatus
 {
     /* 00 */ u32 time_saved;
